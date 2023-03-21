@@ -42,7 +42,7 @@ INSTALLED_APPS = [
 ]
 
 CONSTANCE_CONFIG = {
-    'SESSION_TIMEOUT_SECONDS': (42, 'Answer to the Ultimate Question of Life, '
+    'SESSION_TIMEOUT_SECONDS': (5, 'Answer to the Ultimate Question of Life, '
                        'The Universe, and Everything'),
 }
 
@@ -131,7 +131,4 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-SESSION_COOKIE_AGE = 60
-
 LOGIN_REDIRECT_URL = "/"
