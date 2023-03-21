@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+  <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  var chart_data = {{data|safe }};
+  var chart_labels = {{labels|safe }};
+  console.log(chart_data);
+  const ctx = document.getElementById('myChart');
+
+  var chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: chart_labels,
+      datasets: [{
+        label: '# of Votes',
+        data: [],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+  setInterval(function(){
+    var d = chart_data.pop();
+    if(d == undefined){
+       clearInterval(0);
+    }else{
+        console.log(d);
+        chart.data.datasets[0].data = d;
+        chart.update();
+    }
+  }, 2000);
+
+</script>
+</body>
+</html>
