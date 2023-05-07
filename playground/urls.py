@@ -17,9 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 
 from accounts.views import ChartView
+from laptops.views import LaptopListView, TestAjaxView, increaseCounterView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", ChartView.as_view()),
+    path("laptops", LaptopListView.as_view()),
+    path("ajax_test", TestAjaxView.as_view()),
+    path("ajax_call", increaseCounterView),
     path("accounts/", include("accounts.urls")),
 ]
