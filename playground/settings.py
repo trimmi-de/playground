@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-v0n9(!pwhu7qhcv%xp5t3sve&hor$7!5x&dtb=s)x^t@=wb%25
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 
 # Application definition
@@ -37,11 +37,24 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
+    "djmoney",
     "django_filters",
     "constance",
     "accounts",
-    "laptops"
+    "laptops",
+    "payment",
 ]
+
+#
+CORS_ORIGIN_ALLOW_ALL = True
+# Does not match any trusted origin error
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']
+
+# Paypal
+CLIENT_ID = "AfM2JMozc5j_fAO20lOoG0tIepszxOLenWlhnaaJ318_x3cIx3pYjd3DdoEUsXikRKfm5iFhSXS-0yTX"
+APP_SECRET = "ED9LTPDFA8bNOXmVC-GxbjYfu0_sTEifTY5YcILX7jCG3urCSymNbRrtStd3QdusdJTRsH_2DU8bNe1O"
+SECURE_CROSS_ORIGIN_OPENER_POLICY='same-origin-allow-popups'
 
 CONSTANCE_CONFIG = {
     'SESSION_TIMEOUT_SECONDS': (5, 'Answer to the Ultimate Question of Life, '
@@ -54,6 +67,7 @@ def get_constance(name: str) -> object:
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
