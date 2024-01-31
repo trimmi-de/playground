@@ -26,5 +26,6 @@ urlpatterns = [
     path("ajax_test", TestAjaxView.as_view()),
     path("ajax_call", increaseCounterView),
     path("accounts/", include("accounts.urls")),
-    path("pay/", include("payment.urls"))
+    path("pay/", include("payment.urls")),
+
 ]
