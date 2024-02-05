@@ -1,17 +1,17 @@
 import json
 
+from django.db.models import Sum, Count
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, ListView
-from django.views.generic.detail import BaseDetailView
 from django_filters.views import FilterView
 
 from laptops.filters import LaptopFilter
 from laptops.models import Laptop
+from .models import Sale
 
 
 class LaptopListView(FilterView):
-
     template_name = "laptops.html"
     model = Laptop
     filterset_class = LaptopFilter
@@ -43,15 +43,33 @@ class JSONResponseMixin:
 
 
 class TestAjaxView(TemplateView):
-
     template_name = "ajax_test.html"
 
 
 @csrf_exempt
 def increaseCounterView(request):
-
     json_dict = json.loads(request.body)
     counter = int(json_dict["counter"])
     counter += 1
 
     return JsonResponse({"counter": counter})
+
+
+class SalesSummaryView(ListView):
+    model = Sale
+    template_name = 'sales_summary.html'
+    context_object_name = 'sales_data'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        # Good totorial on: https://hakibenita.com/django-group-by-sql
+        context = super().get_context_data(**kwargs)
+        context['sums_by_month_by_city'] = (Sale.objects.values('date__year', 'date__month', 'city').
+                                annotate(sum_by_city=Sum('sales'), count_sales_per_city=Count('id')).
+                                order_by('date__year', 'date__month', 'city'))
+        context['sums_by_month'] = (Sale.objects.values('date__year', 'date__month').
+                        annotate(sum_by_month=Sum('sales')).
+                        order_by('date__year', 'date__month'))
+        context['sums_by_year'] = (Sale.objects.values('date__year').
+                        annotate(sum_by_month=Sum('sales')).
+                        order_by('date__year'))
+        return context

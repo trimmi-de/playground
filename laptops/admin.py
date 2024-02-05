@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
-from laptops.models import Laptop, Vendor
+from laptops.models import Laptop, Vendor, Sale
 
 
 class LaptopAdmin(admin.ModelAdmin):
@@ -43,3 +43,10 @@ class LaptopCustomListAdmin(admin.ModelAdmin):
     list_display = ['name', "brand"]
 
 admin.site.register(Overview, LaptopCustomListAdmin)
+
+class SaleAdmin(admin.ModelAdmin):
+    list_display = ['date', 'city', 'sales']
+    list_filter = ["city"]
+
+
+admin.site.register(Sale, SaleAdmin)

@@ -1,3 +1,5 @@
+from laptops.views import SalesSummaryView
+
 """playground URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -27,5 +29,6 @@ urlpatterns = [
     path("ajax_call", increaseCounterView),
     path("accounts/", include("accounts.urls")),
     path("pay/", include("payment.urls")),
+    path('sales-summary/', SalesSummaryView.as_view(), name='sales_summary'),
 
 ]
