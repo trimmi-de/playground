@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WebSocket Demo</title>
+</head>
+<body>
+<h1>Real-Time Data</h1>
+<div id="data-container"></div>
+
+<script>
+  const socket = new WebSocket('ws://' + window.location.host + '/ws/data/');
+
+  socket.onmessage = function(e) {
+      const data = JSON.parse(e.data);
+      const container = document.getElementById('data-container');
+
+      if (data.type === 'init') {
+          container.innerHTML = '<p>Connection established!</p>';
+      }
+
+      container.innerHTML += `
+          <p>Value: ${data.value}</p>
+          <p>Time: ${data.timestamp}</p>
+          <hr>
+      `;
+  };
+
+  socket.onclose = function(e) {
+      console.log('Connection closed');
+  };
+</script>
+</body>
+</html>

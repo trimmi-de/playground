@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     "custom_admin",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     "accounts",
     "laptops",
     "payment",
+    'channels',
 ]
 
 #
@@ -97,6 +99,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "playground.wsgi.application"
 
+ASGI_APPLICATION = 'playground.asgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

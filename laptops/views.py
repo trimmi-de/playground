@@ -2,16 +2,18 @@ import json
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import TemplateView, ListView
-from django.views.generic.detail import BaseDetailView
+from django.views.generic import TemplateView
 from django_filters.views import FilterView
 
 from laptops.filters import LaptopFilter
 from laptops.models import Laptop
 
 
-class LaptopListView(FilterView):
+class ChannelDemoView(TemplateView):
+    template_name = 'channels_demo.html'
 
+
+class LaptopListView(FilterView):
     template_name = "laptops.html"
     model = Laptop
     filterset_class = LaptopFilter
@@ -43,13 +45,11 @@ class JSONResponseMixin:
 
 
 class TestAjaxView(TemplateView):
-
     template_name = "ajax_test.html"
 
 
 @csrf_exempt
 def increaseCounterView(request):
-
     json_dict = json.loads(request.body)
     counter = int(json_dict["counter"])
     counter += 1
