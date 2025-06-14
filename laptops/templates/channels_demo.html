@@ -5,24 +5,28 @@
 </head>
 <body>
 <h1>Real-Time Data</h1>
+<h2>{{user}}</h2>
 <div id="data-container"></div>
 
 <script>
+
   const socket = new WebSocket('ws://' + window.location.host + '/ws/data/');
 
+  // Handle incoming messages
   socket.onmessage = function(e) {
       const data = JSON.parse(e.data);
-      const container = document.getElementById('data-container');
 
-      if (data.type === 'init') {
-          container.innerHTML = '<p>Connection established!</p>';
+      if (data.type === 'match_called') {
+        let container = document.getElementById('data-container');
+        container.innerHTML = `
+            <div id="matchNotification">
+                <h2 id="matchName">${data.data.match_name}</h2>
+                <p>Court: <span id="matchCourt">${data.data.court}</span></p>
+                <p>Home: <span id="homeTeam">${data.data.home_team}</span></p>
+                <p>Guest: <span id="guestTeam">${data.data.guest_team}</span></p>
+            </div>
+        `;
       }
-
-      container.innerHTML += `
-          <p>Value: ${data.value}</p>
-          <p>Time: ${data.timestamp}</p>
-          <hr>
-      `;
   };
 
   socket.onclose = function(e) {

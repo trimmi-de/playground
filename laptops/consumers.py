@@ -1,28 +1,31 @@
 import json
-import random
-from asyncio import sleep
-from datetime import datetime
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 
 class DataConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        await self.accept()
-        # Send data every 2 seconds
-        while True:
-            data = {
-                'value': random.randint(1, 100),
-                'timestamp': str(datetime.now())
-            }
-            await self.send(json.dumps(data))
-            await sleep(2)
-
-    async def receive(self, text_data=None, bytes_data=None):
-        # Handle incoming messages if needed
-        pass
-
+        self.user = self.scope["user"]
+        if self.user.is_anonymous:
+            await self.close()
+        else:
+            self.group_name = f'user_{self.user.id}'
+            await self.channel_layer.group_add(
+                self.group_name,
+                self.channel_name
+            )
+            await self.accept()
 
     async def disconnect(self, close_code):
-        self.keep_sending = False
-        await self.close()
+        if hasattr(self, 'group_name'):
+            await self.channel_layer.group_discard(
+                self.group_name,
+                self.channel_name
+            )
+
+    async def match_called(self, event):
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'type': 'match_called',
+            'data': event['data']
+        }))

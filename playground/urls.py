@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from accounts.views import ChartView
-from laptops.views import LaptopListView, TestAjaxView, increaseCounterView, ChannelDemoView
+from laptops.views import LaptopListView, TestAjaxView, increaseCounterView, ChannelDemoView, CallMatchView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -28,4 +28,5 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     path("pay/", include("payment.urls")),
     path('laptops/channel-demo', ChannelDemoView.as_view(), name='channel_demo'),
+    path('laptops/call-match', CallMatchView.as_view(), name='call_match'),
 ]
