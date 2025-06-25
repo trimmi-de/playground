@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+*, *:before, *:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #105469;
+  font-family: 'Verdana', sans-serif;
+}
+table {
+  background: #012B39;
+  border-radius: 0.25em;
+  border-collapse: collapse;
+  margin: 1em;
+}
+th {
+  border-bottom: 1px solid #364043;
+  color: #E2B842;
+  font-size: 1em;
+  font-weight: 600;
+  padding: 0.5em 1em;
+  text-align: left;
+}
+td {
+  color: #fff;
+  font-weight: 400;
+  padding: 0.65em 1em;
+}
+.disabled td {
+  color: #4F5F64;
+}
+tbody tr {
+  transition: background 0.25s ease;
+}
+tbody tr:hover {
+  background: #014055;
+}
+.monthchange {
+    font-weight: bold;
+    background-color: darkblue;
+    }
+.citychange {
+    font-weight: bold;
+    background-color: blue;
+    }
+.number {
+    text-align: right;
+    }
+</style>
+</head>
+
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>City</th>
+        <th>Sales</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for entry in sales_data %}
+        <tr>
+            {% ifchanged entry.date|date:"M" %}
+                <tr>
+                    <td colspan="2" class="monthchange">
+                        {{ entry.date|date:"Y-M" }}
+                    </td>
+                    <td  class="monthchange number">
+                        {% for sum_by_month in sums_by_month %}
+                            {% if entry.date|date:"Y" == sum_by_month.date__year|stringformat:"i" and entry.date|date:"n" == sum_by_month.date__month|stringformat:"i" %}
+                        {{ sum_by_month.sum_by_month|floatformat:2 }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endifchanged %}
+            {% ifchanged entry.city %}
+                <tr>
+                    <td class="citychange">
+                        {{ entry.date|date:"Y-M" }}
+                    </td>
+                    <td class="citychange">
+                        {{ entry.city }}
+                    </td>
+                    <td class="citychange number">
+                        {% for sum_by_month_by_city in sums_by_month_by_city %}
+                            {% if entry.city == sum_by_month_by_city.city and entry.date|date:"Y" == sum_by_month_by_city.date__year|stringformat:"i" and entry.date|date:"n" == sum_by_month_by_city.date__month|stringformat:"i" %}
+                        {{ sum_by_month_by_city.sum_by_city|floatformat:2 }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endifchanged %}
+            <td>{{ entry.date|date:"Y-M-d" }}</td>
+            <td>{{ entry.city }}</td>
+            <td class="number">{{ entry.sales }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
