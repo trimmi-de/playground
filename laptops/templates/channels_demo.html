@@ -15,6 +15,7 @@
 
   // Handle incoming messages
   socket.onmessage = function(e) {
+    console.log('Message received');
     const data = JSON.parse(e.data);
 
     if (data.type === 'match_called') {
@@ -30,11 +31,11 @@
     }
   };
 
-  chatSocket.onopen = function(){
+  socket.onopen = function(){
     console.log('Connected');
   }
 
-  chatSocket.onerror = function(evt) {
+  socket.onerror = function(evt) {
     $('#unexpectedReason').show();
   };
 

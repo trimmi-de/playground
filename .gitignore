@@ -6,3 +6,4 @@ usr
 venv/
 db.sqlite3
 db.sqlite3_old
+.idea/

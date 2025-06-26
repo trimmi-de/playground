@@ -32,8 +32,8 @@ class CallMatchView(FormView):
             'guest_team': 'Hallodri/Hanswurst',
             'court': text_input,
         }
-        self.match_called_message(match, 1) #self.request.user.id
-        self.match_called_message(match, 3)
+        self.match_called_message(match, self.request.user.id)
+        # self.match_called_message(match, 3)
         return super().form_valid(form)
 
     def match_called_message(self, match, user_id):
