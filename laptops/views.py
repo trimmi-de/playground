@@ -32,12 +32,13 @@ class CallMatchView(FormView):
             'guest_team': 'Hallodri/Hanswurst',
             'court': text_input,
         }
-        self.match_called_message(match)
+        self.match_called_message(match, 1) #self.request.user.id
+        self.match_called_message(match, 3)
         return super().form_valid(form)
 
-    def match_called_message(self, match):
+    def match_called_message(self, match, user_id):
         channel_layer = get_channel_layer()
-        user_id = self.request.user.id
+        user_id = user_id
         async_to_sync(channel_layer.group_send)(
             f"user_{user_id}",
             {
